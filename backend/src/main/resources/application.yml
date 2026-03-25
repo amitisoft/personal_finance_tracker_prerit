@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: personal-finance-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/personalfinancetracker}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  error:
+    include-message: always
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+app:
+  cors:
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
+    allowed-origin-patterns: ${APP_CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:*,http://127.0.0.1:*,http://192.168.*:*,http://10.*:*,http://100.*:*,https://localhost:*,https://127.0.0.1:*,https://192.168.*:*,https://10.*:*,https://100.*:*}
+  security:
+    jwt:
+      issuer: personal-finance-service
+      secret: ${APP_SECURITY_JWT_SECRET:dev-secret-key-change-me-dev-secret-key-change-me}
+      access-token-minutes: 15
+      refresh-token-days: 7
+      password-reset-minutes: 30
+  login-rate-limit:
+    window-seconds: 60
+    max-attempts: 10
+  recurring:
+    cron: 0 0 * * * *
+
+
+
+
+
